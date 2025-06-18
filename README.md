@@ -1,36 +1,86 @@
-# This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app)
+# Content Scraper
 
-## Getting Started
+A scalable web scraper that converts blog posts and articles into markdown format. This tool is designed to work with various blog platforms and can be easily extended to support new sources.
 
-First, run the development server:
+## Features
+
+- Converts HTML content to clean markdown
+- Handles pagination automatically
+- Preserves metadata (title, date, author, tags)
+- Supports multiple content sources
+- Easy to extend for new sources
+- Command-line interface for easy use
+
+## Installation
+
+1. Clone the repository
+2. Install dependencies:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Usage
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### List Available Sources
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run scrape list-sources
+```
 
-## Learn More
+### Scrape Content
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm run scrape scrape <source> [options]
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Options:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `-o, --output <directory>`: Output directory for markdown files (default: './output')
 
-## Deploy on Vercel
+Example:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npm run scrape scrape interviewing-blog -o ./content
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Supported Sources
+
+- interviewing-blog: Blog posts from interviewing.io
+- interviewing-companies: Company guides from interviewing.io
+- interviewing-guides: Interview guides from interviewing.io
+- nilmamano-dsa: DS&A blog posts from nilmamano.com
+
+## Adding New Sources
+
+To add a new source, add a new configuration to the `configs` object in `src/scripts/scraper.ts`. The configuration should include:
+
+- `baseUrl`: The base URL of the source
+- `articleSelector`: CSS selector for article containers
+- `titleSelector`: CSS selector for article titles
+- `contentSelector`: CSS selector for article content
+- `dateSelector` (optional): CSS selector for article dates
+- `authorSelector` (optional): CSS selector for article authors
+- `tagsSelector` (optional): CSS selector for article tags
+- `nextPageSelector` (optional): CSS selector for pagination next button
+
+## Output Format
+
+Each scraped article is saved as a markdown file with the following structure:
+
+```markdown
+---
+title: Article Title
+url: https://source.com/article
+source: https://source.com
+date: 2024-01-01
+author: Author Name
+tags: tag1, tag2, tag3
+---
+
+Article content in markdown format...
+```
+
+## Contributing
+
+Feel free to submit issues and enhancement requests!
