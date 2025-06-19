@@ -50,6 +50,27 @@ export async function scrapeBlogPosts(config: ScrapeConfig): Promise<BlogPost[]>
       timeout: 30000 // 30 second timeout per page
     });
 
+    // If a category is specified, click the link/button with that text
+    if (config.category) {
+      console.log(`Looking for category: ${config.category}`);
+      await page.waitForSelector('a, button');
+      const clicked = await page.evaluate((category) => {
+        const elements = Array.from(document.querySelectorAll('a, button'));
+        const el = elements.find(e => e.textContent?.trim() === category);
+        if (el) {
+          (el as HTMLElement).click();
+          return true;
+        }
+        return false;
+      }, config.category);
+      if (clicked) {
+        console.log(`Clicked category: ${config.category}`);
+        await new Promise(res => setTimeout(res, 2000)); // Wait for content to update
+      } else {
+        throw new Error(`Category "${config.category}" not found`);
+      }
+    }
+
     // Get all links on the page
     console.log('Finding links...');
     const links = await page.evaluate(() => {
@@ -68,6 +89,7 @@ export async function scrapeBlogPosts(config: ScrapeConfig): Promise<BlogPost[]>
     });
 
     console.log('Found links:', links.length);
+    console.log('Links:', links);
 
     const posts: BlogPost[] = [];
     const visitedUrls = new Set<string>();

@@ -34,7 +34,7 @@ export class UniversalScraper {
 
       // Wait for content to load
       console.log('Waiting for content to load...');
-      await page.waitForTimeout(5000);
+      await new Promise(res => setTimeout(res, 5000));
 
       // Get the page content
       console.log('Getting page content...');

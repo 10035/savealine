@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ScrapeConfig } from '@/types/scraper';
 
 interface ScraperConfigFormProps {
@@ -11,6 +11,36 @@ interface ScraperConfigFormProps {
 export default function ScraperConfigForm({ onSubmit, loading }: ScraperConfigFormProps) {
   const [url, setUrl] = useState('');
   const [sourceType, setSourceType] = useState<'blog' | 'guide' | 'book'>('blog');
+  const [category, setCategory] = useState('');
+  const [categories, setCategories] = useState<string[]>([]);
+  const [fetchingCategories, setFetchingCategories] = useState(false);
+  const [catError, setCatError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!url) {
+      setCategories([]);
+      setCategory('');
+      setCatError(null);
+      return;
+    }
+    setFetchingCategories(true);
+    setCatError(null);
+    fetch(`/api/categories?url=${encodeURIComponent(url)}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.categories) {
+          setCategories(data.categories);
+        } else {
+          setCategories([]);
+          setCatError('No categories found');
+        }
+      })
+      .catch(() => {
+        setCategories([]);
+        setCatError('Failed to fetch categories');
+      })
+      .finally(() => setFetchingCategories(false));
+  }, [url]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -18,7 +48,8 @@ export default function ScraperConfigForm({ onSubmit, loading }: ScraperConfigFo
       url,
       source_type: sourceType,
       knowledge_base_id: '', // This will be set by the parent component
-      name: url.split('/').pop() || url
+      name: url.split('/').pop() || url,
+      category: category || undefined
     });
   };
 
@@ -52,6 +83,36 @@ export default function ScraperConfigForm({ onSubmit, loading }: ScraperConfigFo
           <option value="guide">Guide</option>
           <option value="book">Book</option>
         </select>
+      </div>
+
+      <div>
+        <label htmlFor="category" className="block text-sm font-medium text-gray-700">
+          Category/Tag (optional)
+        </label>
+        {fetchingCategories && <div className="text-xs text-gray-500">Loading categories...</div>}
+        {catError && <div className="text-xs text-red-500">{catError}</div>}
+        {categories.length > 0 ? (
+          <select
+            id="category"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+          >
+            <option value="">-- Select a category --</option>
+            {categories.map((cat) => (
+              <option key={cat} value={cat}>{cat}</option>
+            ))}
+          </select>
+        ) : (
+          <input
+            type="text"
+            id="category"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            placeholder="e.g. DS&A"
+          />
+        )}
       </div>
 
       <button

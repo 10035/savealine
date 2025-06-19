@@ -17,6 +17,7 @@ export interface ScrapeConfig {
   contentSelector?: string;
   chunkSize?: number;
   preset?: string;
+  category?: string;
 }
 
 export interface ScrapePreset {
