@@ -88,7 +88,17 @@ export default function Home() {
   }
 
   if (!user) {
-    return <SignIn />;
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+        <section className="mb-10 w-full">
+          <div className="max-w-xl mx-auto text-center">
+            <h1 className="text-6xl font-extrabold text-blue-700 mb-4 tracking-tight">Save Aline <span role="img" aria-label="superhero">🦸🏻‍♀️</span></h1>
+            <p className="text-2xl text-gray-700 font-light mb-2">Pull and save your published content to private knowledge bases</p>
+          </div>
+        </section>
+        <SignIn />
+      </div>
+    );
   }
 
   return (
