@@ -34,7 +34,9 @@ export const PRESETS: ScrapePreset[] = [
     description: 'Scrape all blog posts from interviewing.io',
     config: {
       url: 'https://interviewing.io/blog',
-      name: 'interviewing-blog'
+      name: 'interviewing-blog',
+      source_type: 'blog',
+      knowledge_base_id: 'default-kb'
     }
   },
   {
@@ -43,7 +45,9 @@ export const PRESETS: ScrapePreset[] = [
     description: 'Scrape all company guides from interviewing.io',
     config: {
       url: 'https://interviewing.io/topics#companies',
-      name: 'company-guides'
+      name: 'company-guides',
+      source_type: 'guide',
+      knowledge_base_id: 'default-kb'
     }
   },
   {
@@ -52,7 +56,9 @@ export const PRESETS: ScrapePreset[] = [
     description: 'Scrape all interview guides from interviewing.io',
     config: {
       url: 'https://interviewing.io/learn#interview-guides',
-      name: 'interview-guides'
+      name: 'interview-guides',
+      source_type: 'guide',
+      knowledge_base_id: 'default-kb'
     }
   },
   {
@@ -61,7 +67,9 @@ export const PRESETS: ScrapePreset[] = [
     description: 'Scrape all DSA blog posts from nilmamano.com',
     config: {
       url: 'https://nilmamano.com/blog/category/dsa',
-      name: 'nil-dsa'
+      name: 'nil-dsa',
+      source_type: 'blog',
+      knowledge_base_id: 'default-kb'
     }
   },
   {
@@ -70,7 +78,9 @@ export const PRESETS: ScrapePreset[] = [
     description: 'Scrape any blog with custom selectors',
     config: {
       url: '',
-      name: 'custom-blog'
+      name: 'custom-blog',
+      source_type: 'blog',
+      knowledge_base_id: 'default-kb'
     }
   }
 ]; 
