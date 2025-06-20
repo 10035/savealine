@@ -110,7 +110,7 @@ export default function ScraperConfigForm({ onSubmit, loading }: ScraperConfigFo
             value={category}
             onChange={(e) => setCategory(e.target.value)}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-            placeholder="e.g. DS&A"
+            placeholder="e.g. Blog, Finance, Product, etc."
           />
         )}
       </div>

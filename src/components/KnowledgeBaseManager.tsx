@@ -150,43 +150,22 @@ export default function KnowledgeBaseManager({ selectedKnowledgeBase, onSelect }
         {knowledgeBases.length === 0 ? (
           <p className="text-gray-500">No knowledge bases created yet.</p>
         ) : (
-          <>
-            <div className="mb-4">
-              <label htmlFor="knowledge-base-select" className="block text-sm font-medium text-gray-700 mb-1">
-                Select a Knowledge Base
-              </label>
-              <select
-                id="knowledge-base-select"
-                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                value={selectedKnowledgeBase?.id || ''}
-                onChange={e => {
-                  const base = knowledgeBases.find(b => b.id === e.target.value);
-                  if (base) onSelect(base);
-                }}
+          <div className="space-y-4">
+            {knowledgeBases.map((base) => (
+              <div
+                key={base.id}
+                className={`border rounded-lg p-4 ${selectedKnowledgeBase?.id === base.id ? 'border-blue-500 bg-blue-50' : ''}`}
               >
-                <option value="" disabled>Select...</option>
-                {knowledgeBases.map(base => (
-                  <option key={base.id} value={base.id}>{base.name}</option>
-                ))}
-              </select>
-            </div>
-            <div className="space-y-4">
-              {knowledgeBases.map((base) => (
-                <div
-                  key={base.id}
-                  className={`border rounded-lg p-4 ${selectedKnowledgeBase?.id === base.id ? 'border-blue-500 bg-blue-50' : ''}`}
-                >
-                  <h3 className="text-xl font-semibold mb-2">{base.name}</h3>
-                  {base.description && (
-                    <p className="text-gray-600 mb-2">{base.description}</p>
-                  )}
-                  <div className="text-sm text-gray-500">
-                    Created: {new Date(base.created_at).toLocaleDateString()}
-                  </div>
+                <h3 className="text-xl font-semibold mb-2">{base.name}</h3>
+                {base.description && (
+                  <p className="text-gray-600 mb-2">{base.description}</p>
+                )}
+                <div className="text-sm text-gray-500">
+                  Created: {new Date(base.created_at).toLocaleDateString()}
                 </div>
-              ))}
-            </div>
-          </>
+              </div>
+            ))}
+          </div>
         )}
       </div>
     </div>
