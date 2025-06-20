@@ -51,4 +51,4 @@ ${article.content}
     }
   });
 
-program.parse(); 
+program.parse(process.argv); 
